@@ -1,0 +1,47 @@
+const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
+require('dotenv').config();
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+});
+
+client.once('ready', () => {
+  console.log(`✅ Logged in as ${client.user.tag}`);
+});
+
+client.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+
+  if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+    return message.reply("❌ You must be an admin to use this command.");
+  }
+
+  const args = message.content.trim().split(/\s+/);
+  const command = args[0].toLowerCase();
+
+  if (command === '!createchannel') {
+    const baseName = args[1];
+    const count = parseInt(args[2]);
+
+    if (!baseName || isNaN(count) || count < 1) {
+      return message.reply("❗ Usage: `!createchannel <name> <amount>` (e.g. !createchannel ticket 5)");
+    }
+
+    const created = [];
+    for (let i = 1; i <= count; i++) {
+      const channelName = `${baseName}-${i}`.toLowerCase();
+      try {
+        const newChannel = await message.guild.channels.create({
+          name: channelName
+{
+  "name": "discord-channel-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1"
+  }
+}
